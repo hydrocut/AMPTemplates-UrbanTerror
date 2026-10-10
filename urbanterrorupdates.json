@@ -1,0 +1,43 @@
+[
+    {
+        "UpdateStageName": "Updater officiel de FrozenSand (UrTUpdater_Ded.sh)",
+        "UpdateSourcePlatform": "Linux",
+        "UpdateSource": "FetchURL",
+        "UpdateSourceData": "https://raw.githubusercontent.com/FrozenSand/UrTUpdater/master/ded/UrTUpdater_Ded.sh",
+        "UpdateSourceArgs": "UrTUpdater_Ded.sh",
+        "UpdateSourceTarget": "{{$FullBaseDir}}",
+        "UnzipUpdateSource": false,
+        "OverwriteExistingFiles": true,
+        "SkipOnFailure": false
+    },
+    {
+        "UpdateStageName": "Modele des reglages (AMP_reglages.txt)",
+        "UpdateSourcePlatform": "All",
+        "UpdateSource": "FetchURL",
+        "UpdateSourceData": "https://raw.githubusercontent.com/hydrocut/AMPTemplates-UrbanTerror/main/scripts/AMP_reglages.txt",
+        "UpdateSourceArgs": "AMP_reglages.txt",
+        "UpdateSourceTarget": "{{$FullBaseDir}}",
+        "UnzipUpdateSource": false,
+        "OverwriteExistingFiles": true,
+        "SkipOnFailure": false
+    },
+    {
+        "UpdateStageName": "Script de lancement (lancer-urt.sh)",
+        "UpdateSourcePlatform": "Linux",
+        "UpdateSource": "FetchURL",
+        "UpdateSourceData": "https://raw.githubusercontent.com/hydrocut/AMPTemplates-UrbanTerror/main/scripts/lancer-urt.sh",
+        "UpdateSourceArgs": "lancer-urt.sh",
+        "UpdateSourceTarget": "{{$FullBaseDir}}",
+        "UnzipUpdateSource": false,
+        "OverwriteExistingFiles": true,
+        "SkipOnFailure": false
+    },
+    {
+        "UpdateStageName": "Installation et mise a jour d'Urban Terror 4.3 (environ 1,4 Go)",
+        "UpdateSourcePlatform": "Linux",
+        "UpdateSource": "Executable",
+        "UpdateSourceData": "/bin/bash",
+        "UpdateSourceArgs": "\"{{$FullBaseDir}}lancer-urt.sh\" installer",
+        "SkipOnFailure": false
+    }
+]

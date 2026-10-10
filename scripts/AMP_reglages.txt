@@ -1,0 +1,20 @@
+# reglages-amp.txt - ECRIT PAR AMP a chaque demarrage, a partir de AMP_reglages.txt.
+# Lu par lancer-urt.sh, jamais par le jeu : change les reglages dans l'onglet
+# Configuration d'AMP. Pour un reglage en plus, ecris-le dans q3ut4/perso.cfg.
+sv_hostname={{sv_hostname}}
+sv_joinmessage={{sv_joinmessage}}
+g_motd={{g_motd}}
+sv_maxclients={{$MaxUsers}}
+dedicated={{dedicated}}
+g_password={{g_password}}
+rconpassword={{rconpassword}}
+g_gametype={{g_gametype}}
+map={{map}}
+rotation={{rotation}}
+timelimit={{timelimit}}
+fraglimit={{fraglimit}}
+capturelimit={{capturelimit}}
+g_roundtime={{g_roundtime}}
+g_friendlyfire={{g_friendlyfire}}
+g_allowvote={{g_allowvote}}
+sv_allowdownload={{sv_allowdownload}}

@@ -1,0 +1,14 @@
+# Ce depot ne contient que le template : le jeu (q3ut4/, binaires) vient de
+# l'updater officiel de FrozenSand, sur le serveur. Rien de ce qui suit ne doit y entrer.
+q3ut4/
+Quake3-UrT*
+UrTUpdater_Ded.sh
+updater-cfg
+reglages-amp.txt
+cartes-disponibles.txt
+*.pk3
+*.log
+__pycache__/
+
+# Notes internes de TeamKit (essais, etapes), pas dans le depot public
+FAISABILITE.md
