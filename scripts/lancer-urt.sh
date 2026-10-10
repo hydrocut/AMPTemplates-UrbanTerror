@@ -101,6 +101,25 @@ with io.open(os.path.join(ICI, 'reglages-amp.txt'), encoding='utf-8', errors='re
             k, v = ligne.split('=', 1)
             R[k.strip()] = v
 
+# Joueurs maximum : AMP ne remplace PAS la variable $MaxUsers dans un fichier de type template
+# (vu en vrai le 10/10/2026 : la ligne arrivait telle quelle). On lit donc App.MaxUsers
+# dans le GenericModule.kvp de l'instance (dossier parent de FullBaseDir), sinon 16.
+if not re.fullmatch(r'\d+', R.get('sv_maxclients', '').strip()):
+    trouve = ''
+    for kvp in (os.path.join(ICI, '..', 'GenericModule.kvp'), os.path.join(ICI, 'GenericModule.kvp')):
+        try:
+            with io.open(kvp, encoding='utf-8', errors='replace') as f:
+                for ligne in f:
+                    if ligne.startswith('App.MaxUsers='):
+                        trouve = ligne.split('=', 1)[1].strip()
+                        break
+        except OSError:
+            continue
+        if trouve:
+            break
+    R['sv_maxclients'] = trouve if re.fullmatch(r'\d+', trouve) else '16'
+    dire('joueurs maximum lus dans les reglages de l\'instance : %s' % R['sv_maxclients'])
+
 # 2. textes : le moteur remplace tout octet > 127 par un point et % par un point chez
 #    les joueurs (msg.c) ; " ; et \ sont interdits dans les infostrings (nom du serveur).
 REMPLACE = {'\u0153': 'oe', '\u0152': 'OE', '\u00e6': 'ae', '\u00c6': 'AE', '\u00df': 'ss',
