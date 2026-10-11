@@ -8,7 +8,8 @@ Contrôle du template avant de le pousser (même rôle que ceux de Wesnoth et de
 2. le .kvp : fichiers inclus, Ref du port, bloc Console.* / Limits.* complet, console d'AMP
    sur l'entrée du serveur (STDIO), arrêt par « quit », conteneur + libxml2-utils ;
 3. chaque réglage exposé dans AMP est écrit dans scripts/AMP_reglages.txt (rendu par AMP en
-   reglages-amp.txt) et lu par le lanceur, et inversement ;
+   reglages-amp.txt) et lu par le lanceur, et inversement, sauf « Joueurs maximum » : AMP ne
+   remplace pas $MaxUsers dans le modèle, le lanceur lit App.MaxUsers dans le kvp de l'instance ;
 4. les choix, bornes et valeurs par défaut d'AMP sont ceux du lanceur ;
 5. les fichiers téléchargés à l'Update existent dans scripts/, à l'URL du dépôt du manifest,
    et l'étape d'installation lance bien le lanceur ;
@@ -144,14 +145,20 @@ for l in lignes_modele:
         soucis.append('ligne du modèle inattendue : %s' % l)
         continue
     dans_modele[m.group(1)] = m.group(2)
+# Joueurs maximum : AMP ne remplace pas $MaxUsers dans un fichier modèle (10/10/2026), le
+# lanceur lit App.MaxUsers dans le GenericModule.kvp de l'instance : aucune ligne au modèle.
+if 'sv_maxclients' in dans_modele or '{{$' in modele:
+    soucis.append('%s : ni ligne sv_maxclients ni {{$...}} (AMP ne les remplace pas)' % MODELE)
 for p, c in par_param.items():
+    if p == 'sv_maxclients':
+        continue
     if dans_modele.get(p) != c['FieldName']:
         soucis.append('%s : attendu « %s={{%s}} » dans %s' % (p, p, c['FieldName'], MODELE))
 for p in set(dans_modele) - set(par_param):
     soucis.append('%s dans %s mais aucun réglage AMP' % (p, MODELE))
 LU = re.compile(r"""(?:R\.get|texte|nombre|choix|mot_de_passe)\('([a-z_]+)'""")
 lus = set(LU.findall(lanceur))
-if lus != set(dans_modele):
+if lus != set(dans_modele) | {'sv_maxclients'}:
     soucis.append('clés du modèle %s ≠ clés lues par le lanceur %s' % (sorted(dans_modele), sorted(lus)))
 else:
     ok('correspondance', '%d réglages : AMP -> AMP_reglages.txt -> lanceur' % len(par_param))
@@ -320,6 +327,9 @@ def preparer(valeurs, avant=None):
             avant(tmp)
         with io.open(os.path.join(tmp, 'reglages-amp.txt'), 'w', encoding='utf-8', newline='\n') as f:
             f.write(rendre(valeurs))
+        # Joueurs maximum : là où le lanceur le lit vraiment (kvp de l'instance).
+        with io.open(os.path.join(tmp, 'GenericModule.kvp'), 'w', encoding='utf-8', newline='\n') as f:
+            f.write('App.MaxUsers=%s\n' % valeurs.get('sv_maxclients', cles.get('App.MaxUsers')))
         sortie = os.path.join(tmp, 'args')
         p = subprocess.run([sys.executable, '-I', '-', tmp, sortie], input=PREPARER.encode('utf-8'),
                            capture_output=True, timeout=60)

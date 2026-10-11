@@ -39,7 +39,7 @@ non-interactively means the instance owner accepts it; the Update prints a notic
 | File | Role |
 |---|---|
 | `urbanterror.kvp`, `urbanterror*.json`, `manifest.json` | the AMP template |
-| `scripts/AMP_reglages.txt` | settings model; AMP renders it to `reglages-amp.txt` (`ConfigType: template`) |
+| `scripts/AMP_reglages.txt` | settings model; AMP renders it to `reglages-amp.txt` (`ConfigType: template`). No `sv_maxclients` line: AMP does not replace `$MaxUsers` in a template file, so `lancer-urt.sh` reads `App.MaxUsers` in the instance's `GenericModule.kvp` (16 if missing) |
 | `scripts/lancer-urt.sh` | install (`installer`) and start (`lancer <port>`) script |
 | `verifier.py` | pre-push checks, must print `Tout est bon.` |
 

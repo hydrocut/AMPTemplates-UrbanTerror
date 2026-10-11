@@ -4,7 +4,9 @@
 sv_hostname={{sv_hostname}}
 sv_joinmessage={{sv_joinmessage}}
 g_motd={{g_motd}}
-sv_maxclients={{$MaxUsers}}
+# Joueurs maximum : volontairement absent. AMP ne remplace pas $MaxUsers dans ce
+# fichier (essai du 10/10/2026) ; lancer-urt.sh lit App.MaxUsers dans le
+# GenericModule.kvp de l'instance (reglage "Joueurs maximum"), sinon 16.
 dedicated={{dedicated}}
 g_password={{g_password}}
 rconpassword={{rconpassword}}
